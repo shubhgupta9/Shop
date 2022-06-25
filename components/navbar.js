@@ -4,8 +4,8 @@ import Link from "next/link";
 import {
   AiOutlineShoppingCart,
   AiFillCloseCircle,
-  AiOutlinePlusCircle,
-  AiOutlineMinusCircle,
+  AiFillPlusCircle,
+  AiFillMinusCircle,
 } from "react-icons/ai";
 import { BsFillBagCheckFill } from "react-icons/bs";
 import { useRef } from "react";
@@ -62,7 +62,9 @@ function Navbar({ cart, addToCart, removeFromCart, clearCart, subTotal }) {
       </div>
       <div
         ref={ref}
-        className="w-72 h-[100vh] sideCart z-10 absolute top-0 right-0 bg-pink-100 px-8 py-10 transform transition-transform translate-x-full"
+        className={`w-72 h-[100vh] sideCart z-10 absolute top-0 right-0 bg-pink-100 px-8 py-10 transform transition-transform ${
+          Object.keys(cart).length !== 0 ? `translate-x-0` : `translate-x-full`
+        }`}
       >
         <h2 className="font-bold text-xl text-center">Shopping Cart</h2>
         <span
@@ -82,7 +84,7 @@ function Navbar({ cart, addToCart, removeFromCart, clearCart, subTotal }) {
                 <div className="item flex my-5">
                   <div className="w-2/3 font-semibold">{cart[k].Name}</div>
                   <div className="flex font-semibold items-center justify-center w-40 h-auto">
-                    <AiOutlineMinusCircle
+                    <AiFillMinusCircle
                       onClick={() => {
                         removeFromCart(
                           k,
@@ -93,10 +95,10 @@ function Navbar({ cart, addToCart, removeFromCart, clearCart, subTotal }) {
                           cart[k].variant
                         );
                       }}
-                      className="mx-3"
+                      className="mx-3 text-pink-500 text-xl"
                     />
                     <span className="mx-2 text-sm">{cart[k].qty}</span>
-                    <AiOutlinePlusCircle
+                    <AiFillPlusCircle
                       onClick={() => {
                         addToCart(
                           k,
@@ -107,7 +109,7 @@ function Navbar({ cart, addToCart, removeFromCart, clearCart, subTotal }) {
                           cart[k].variant
                         );
                       }}
-                      className="mx-3"
+                      className="text-pink-500 mx-3 text-xl"
                     />
                   </div>
                 </div>
@@ -115,6 +117,8 @@ function Navbar({ cart, addToCart, removeFromCart, clearCart, subTotal }) {
             );
           })}
         </ol>
+        <div className="total font-bold my-2">Subtotal: ₹{subTotal}</div>
+
         <div className="flex">
           <Link href={"/checkout"}>
             <button className="flex mr-2 text-white bg-pink-500 border-0 py-2 px-2 focus:outline-none hover:bg-pink-600 rounded text-sm">
