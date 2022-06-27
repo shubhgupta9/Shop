@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-function Login() {
+function Forgot() {
   return (
     <div>
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -20,16 +20,16 @@ function Login() {
               </Link>
             </a>
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-              Sign in to your account
+              Forgot Password
             </h2>
             <p className="mt-2 text-center text-sm text-gray-600">
               Or
-              <Link href={"/signUp"}>
+              <Link href={"/login"}>
                 <a
                   href="#"
                   className="font-medium text-pink-600 hover:text-pink-500 mx-2"
                 >
-                  Sign-up
+                  Login
                 </a>
               </Link>
             </p>
@@ -50,48 +50,6 @@ function Login() {
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm"
                   placeholder="Email address"
                 />
-              </div>
-              <div>
-                <label htmlFor="password" className="sr-only">
-                  Password
-                </label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm"
-                  placeholder="Password"
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-pink-600 focus:ring-pink-500 border-gray-300 rounded"
-                />
-                <label
-                  htmlFor="remember-me"
-                  className="ml-2 block text-sm text-gray-900"
-                >
-                  Remember me
-                </label>
-              </div>
-
-              <div className="text-sm">
-                <Link href={"/forgot"}>
-                  <a
-                    href="#"
-                    className="font-medium text-pink-600 hover:text-pink-500"
-                  >
-                    Forgot your password?
-                  </a>
-                </Link>
               </div>
             </div>
 
@@ -115,7 +73,7 @@ function Login() {
                     />
                   </svg>
                 </span>
-                Sign in
+                Continue
               </button>
             </div>
           </form>
@@ -125,4 +83,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Forgot;
