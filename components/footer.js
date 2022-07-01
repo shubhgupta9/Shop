@@ -1,6 +1,6 @@
-import React from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
+import React from "react";
+import Link from "next/link";
+import Image from "next/image";
 
 const Footer = () => {
   return (
@@ -10,18 +10,46 @@ const Footer = () => {
           <div className="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
             <a className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
               <Image width={90} height={90} src="/logo.png" alt="codeshop" />
-              <Link href={'/'}>
-                <span className="ml-3 text-xl">JANPATH BAZAAR</span>
+              <Link href={"/"}>
+                <span className="ml-3 text-xl">CODE SHOP</span>
               </Link>
             </a>
-            <p className="mt-2 text-sm text-gray-500">
-              Air plant banjo lyft occupy retro adaptogen indego
+            <p className="mt-2 text-sm text-gray-500">Code Shop</p>
+            <p className="text-sm text-gray-500">
+              A luxury wear online outlet.
             </p>
           </div>
           <div className="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center">
             <div className="lg:w-1/4 md:w-1/2 w-full px-4">
               <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">
-                CATEGORIES
+                SHOP
+              </h2>
+              <nav className="list-none mb-10">
+                <li>
+                  <Link href={"/tshirts"}>
+                    <a className="text-gray-600 hover:text-gray-800">Tshirts</a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href={"/hoodies"}>
+                    <a className="text-gray-600 hover:text-gray-800">Hoodies</a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href={"/jeans"}>
+                    <a className="text-gray-600 hover:text-gray-800">Jeans</a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href={"/shoes"}>
+                    <a className="text-gray-600 hover:text-gray-800">Shoes</a>
+                  </Link>
+                </li>
+              </nav>
+            </div>
+            <div className="lg:w-1/4 md:w-1/2 w-full px-4">
+              <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">
+                SOCIAL
               </h2>
               <nav className="list-none mb-10">
                 <li>
@@ -48,7 +76,7 @@ const Footer = () => {
             </div>
             <div className="lg:w-1/4 md:w-1/2 w-full px-4">
               <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">
-                CATEGORIES
+                POLICY
               </h2>
               <nav className="list-none mb-10">
                 <li>
@@ -75,34 +103,7 @@ const Footer = () => {
             </div>
             <div className="lg:w-1/4 md:w-1/2 w-full px-4">
               <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">
-                CATEGORIES
-              </h2>
-              <nav className="list-none mb-10">
-                <li>
-                  <a className="text-gray-600 hover:text-gray-800">
-                    First Link
-                  </a>
-                </li>
-                <li>
-                  <a className="text-gray-600 hover:text-gray-800">
-                    Second Link
-                  </a>
-                </li>
-                <li>
-                  <a className="text-gray-600 hover:text-gray-800">
-                    Third Link
-                  </a>
-                </li>
-                <li>
-                  <a className="text-gray-600 hover:text-gray-800">
-                    Fourth Link
-                  </a>
-                </li>
-              </nav>
-            </div>
-            <div className="lg:w-1/4 md:w-1/2 w-full px-4">
-              <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">
-                CATEGORIES
+                ABOUT
               </h2>
               <nav className="list-none mb-10">
                 <li>
@@ -132,15 +133,7 @@ const Footer = () => {
         <div className="bg-gray-100">
           <div className="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
             <p className="text-gray-500 text-sm text-center sm:text-left">
-              © 2020 Tailblocks —
-              <a
-                href="https://twitter.com/knyttneve"
-                rel="noopener noreferrer"
-                className="text-gray-600 ml-1"
-                target="_blank"
-              >
-                @knyttneve
-              </a>
+              © 2022 CodeShop.com - Registered
             </p>
             <span className="inline-flex sm:ml-auto sm:mt-0 mt-2 justify-center sm:justify-start">
               <a className="text-gray-500">
@@ -203,7 +196,7 @@ const Footer = () => {
         </div>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

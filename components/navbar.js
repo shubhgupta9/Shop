@@ -35,22 +35,22 @@ function Navbar({ cart, addToCart, removeFromCart, clearCart, subTotal }) {
         <ul className="flex items-center space-x-4 font-bold md:text-sm">
           <Link href={"/tshirts"}>
             <a>
-              <li>Tshirts</li>
+              <li className="hover:text-pink-500">Tshirts</li>
             </a>
           </Link>
           <Link href={"/hoodies"}>
             <a href="">
-              <li>Hoodies</li>
+              <li className="hover:text-pink-500">Hoodies</li>
             </a>
           </Link>
           <Link href={"/jeans"}>
             <a href="">
-              <li>Jeans</li>
+              <li className="hover:text-pink-500">Jeans</li>
             </a>
           </Link>
           <Link href={"/shoes"}>
             <a href="">
-              <li>Sneakers</li>
+              <li className="hover:text-pink-500">Sneakers</li>
             </a>
           </Link>
         </ul>
@@ -61,12 +61,14 @@ function Navbar({ cart, addToCart, removeFromCart, clearCart, subTotal }) {
           className="text-xl md:text-3xl"
         />
         <Link href={"/login"}>
-          <MdAccountCircle className="text-xl md:text-3xl mx-2" />
+          <a>
+            <MdAccountCircle className="text-xl md:text-3xl mx-2" />
+          </a>
         </Link>
       </div>
       <div
         ref={ref}
-        className={`w-72 h-[100vh] sideCart z-10 absolute top-0 right-0 bg-pink-100 px-8 py-10 transform transition-transform ${
+        className={`w-72 h-[100vh] overflow-y-scroll sideCart z-10 absolute top-0 right-0 bg-pink-100 px-8 py-10 transform transition-transform ${
           Object.keys(cart).length !== 0 ? `translate-x-0` : `translate-x-full`
         }`}
       >
@@ -86,7 +88,9 @@ function Navbar({ cart, addToCart, removeFromCart, clearCart, subTotal }) {
             return (
               <li key={k}>
                 <div className="item flex my-5">
-                  <div className="w-2/3 font-semibold">{cart[k].Name}</div>
+                  <div className="w-2/3 font-semibold">
+                    {cart[k].Name}({cart[k].size}/{cart[k].variant})
+                  </div>
                   <div className="flex font-semibold items-center justify-center w-40 h-auto">
                     <AiFillMinusCircle
                       onClick={() => {

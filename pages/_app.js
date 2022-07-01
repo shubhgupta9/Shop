@@ -2,10 +2,13 @@ import "../styles/globals.css";
 import Footer from "../components/footer";
 import Navbar from "../components/navbar";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 function MyApp({ Component, pageProps }) {
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
+  const router = useRouter();
+
   useEffect(() => {
     try {
       if (localStorage.getItem("cart")) {
@@ -39,8 +42,16 @@ function MyApp({ Component, pageProps }) {
     saveCart(newCart);
   };
 
+  const buyNow = (itemCode, qty, price, Name, size, variant) => {
+    let newCart = { itemCode: { qty: 1, price, Name, size, variant } };
+    setCart(newCart);
+    saveCart(newCart);
+    router.push("/checkout");
+  };
+
   const clearCart = () => {
     setCart({});
+    saveCart({});
   };
 
   const removeFromCart = (itemCode, qty, price, Name, size, variant) => {
@@ -68,6 +79,7 @@ function MyApp({ Component, pageProps }) {
       <Component
         cart={cart}
         addToCart={addToCart}
+        buyNow={buyNow}
         removeFromCart={removeFromCart}
         clearCart={clearCart}
         subTotal={subTotal}
