@@ -1,8 +1,49 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 function Login() {
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  const handleChange = (e) => {
+    if (e.target.id === "name") {
+      setName(e.target.value);
+    } else if (e.target.id === "email") {
+      setEmail(e.target.value);
+    } else if (e.target.id === "password") {
+      setPassword(e.target.value);
+    }
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = { name, email, password };
+    let res = await fetch("/api/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    let response = await res.json();
+    console.log(response);
+    setEmail("");
+    setName("");
+    setPassword("");
+    toast.success("New user created!", {
+      position: "top-left",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
   return (
     <div>
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -24,7 +65,7 @@ function Login() {
             </h2>
             <p className="mt-2 text-center text-sm text-gray-600">
               Or
-              <Link href={"/signUp"}>
+              <Link href={"/signup"}>
                 <a
                   href="#"
                   className="font-medium text-pink-600 hover:text-pink-500 mx-2"

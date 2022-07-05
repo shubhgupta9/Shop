@@ -3,7 +3,7 @@ import Footer from "../components/footer";
 import Navbar from "../components/navbar";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-
+import "react-toastify/dist/ReactToastify.css";
 function MyApp({ Component, pageProps }) {
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);

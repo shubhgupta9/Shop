@@ -1,10 +1,62 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 function SignUp() {
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  const handleChange = (e) => {
+    if (e.target.id === "name") {
+      setName(e.target.value);
+    } else if (e.target.id === "email") {
+      setEmail(e.target.value);
+    } else if (e.target.id === "password") {
+      setPassword(e.target.value);
+    }
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = { name, email, password };
+    let res = await fetch("/api/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    let response = await res.json();
+    console.log(response);
+    setEmail("");
+    setName("");
+    setPassword("");
+    toast.success("New user created!", {
+      position: "top-left",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
   return (
     <div>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
@@ -34,29 +86,37 @@ function SignUp() {
               </Link>
             </p>
           </div>
-          <form className="mt-8 space-y-6" action="#" method="POST">
+          <form
+            onSubmit={handleSubmit}
+            className="mt-8 space-y-6"
+            method="POST"
+          >
             <input type="hidden" name="remember" value="true" />
             <div className="rounded-md shadow-sm -space-y-px">
               <div>
-                <label htmlFor="Name" className="sr-only">
+                <label htmlFor="name" className="sr-only">
                   Name
                 </label>
                 <input
-                  id="Name"
-                  name="Name"
+                  value={name}
+                  onChange={handleChange}
+                  id="name"
+                  name="name"
                   type="text"
-                  autoComplete="Name"
+                  autoComplete="name"
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm"
                   placeholder="Name"
                 />
               </div>
               <div>
-                <label htmlFor="email-address" className="sr-only">
+                <label htmlFor="email" className="sr-only">
                   Email address
                 </label>
                 <input
-                  id="email-address"
+                  value={email}
+                  onChange={handleChange}
+                  id="email"
                   name="email"
                   type="email"
                   autoComplete="email"
@@ -70,6 +130,8 @@ function SignUp() {
                   Password
                 </label>
                 <input
+                  value={password}
+                  onChange={handleChange}
                   id="password"
                   name="password"
                   type="password"

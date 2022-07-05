@@ -2,6 +2,8 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Product from "../../models/Product";
 import mongoose from "mongoose";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Post = ({ buyNow, addToCart, product, variants }) => {
   const router = useRouter();
@@ -13,8 +15,26 @@ const Post = ({ buyNow, addToCart, product, variants }) => {
     let pinJson = await pins.json();
     if (pinJson.includes(parseInt(pin))) {
       setService(true);
+      toast.success("Your pincode is serviceable!", {
+        position: "bottom-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
     } else {
       setService(false);
+      toast.error("Sorry your pincode is not serviceable!", {
+        position: "bottom-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
   const onChangePin = (e) => {
@@ -31,6 +51,17 @@ const Post = ({ buyNow, addToCart, product, variants }) => {
   return (
     <>
       <section className="text-gray-600 body-font overflow-hidden">
+        <ToastContainer
+          position="bottom-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover={false}
+        />
         <div className="container px-5 py-16 mx-auto">
           <div className="lg:w-4/5 mx-auto flex flex-wrap">
             <img
@@ -231,11 +262,18 @@ const Post = ({ buyNow, addToCart, product, variants }) => {
               </div>
               <div className="flex">
                 <span className="title-font font-medium text-2xl text-gray-900">
-                  ₹1499.00
+                  ₹{product.price}.00
                 </span>
                 <button
                   onClick={() => {
-                    addToCart(slug, 1, 1499, product.title, size, color);
+                    addToCart(
+                      slug,
+                      1,
+                      product.price,
+                      product.title,
+                      size,
+                      color
+                    );
                   }}
                   className="flex ml-8 text-white bg-pink-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-pink-600 text-sm rounded"
                 >
@@ -243,7 +281,7 @@ const Post = ({ buyNow, addToCart, product, variants }) => {
                 </button>
                 <button
                   onClick={() => {
-                    buyNow(slug, 1, 1499, product.title, size, color);
+                    buyNow(slug, 1, product.price, product.title, size, color);
                   }}
                   className="flex ml-4 text-white bg-pink-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-pink-600 text-sm rounded"
                 >
@@ -298,7 +336,10 @@ export async function getServerSideProps(context) {
     await mongoose.connect(process.env.MONGO_URI);
   }
   let product = await Product.findOne({ slug: context.query.slug });
-  let variants = await Product.find({ title: product.title });
+  let variants = await Product.find({
+    title: product.title,
+    category: product.category,
+  });
   let colorSizeSlug = {};
   for (let item of variants) {
     if (Object.keys(colorSizeSlug).includes(item.color)) {
@@ -308,6 +349,7 @@ export async function getServerSideProps(context) {
       colorSizeSlug[item.color][item.size] = { slug: item.slug };
     }
   }
+
   return {
     props: {
       product: JSON.parse(JSON.stringify(product)),
