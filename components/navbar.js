@@ -10,8 +10,19 @@ import {
 import { BsFillBagCheckFill } from "react-icons/bs";
 import { MdAccountCircle } from "react-icons/md";
 import { useRef } from "react";
+import { useState } from "react";
 
-function Navbar({ cart, addToCart, removeFromCart, clearCart, subTotal }) {
+function Navbar({
+  logout,
+  user,
+  cart,
+  addToCart,
+  removeFromCart,
+  clearCart,
+  subTotal,
+}) {
+  const [dropdown, setDropdown] = useState(false);
+
   const toggleCart = () => {
     if (ref.current.classList.contains("translate-x-full")) {
       ref.current.classList.remove("translate-x-full");
@@ -55,16 +66,61 @@ function Navbar({ cart, addToCart, removeFromCart, clearCart, subTotal }) {
           </Link>
         </ul>
       </div>
-      <div className="cursor-pointer cart absolute right-0 top-4 mx-5 flex">
+      <div className="cursor-pointer items-center cart absolute right-0 top-4 mx-5 flex">
+        <a
+          onMouseOver={() => {
+            setDropdown(true);
+          }}
+          onMouseLeave={() => {
+            setDropdown(false);
+          }}
+        >
+          {dropdown && (
+            <div
+              onMouseOver={() => {
+                setDropdown(true);
+              }}
+              onMouseLeave={() => {
+                setDropdown(false);
+              }}
+              className="absolute right-7 bg-pink-300 top-7 rounded-md py-2 px-5 w-32"
+            >
+              <ul>
+                <Link href={"/myaccount"}>
+                  <li className="py-1 hover:text-pink-800 text-sm">
+                    My Account
+                  </li>
+                </Link>
+                <Link href={"/orders"}>
+                  <li className="py-1 hover:text-pink-800 text-sm">Orders</li>
+                </Link>
+
+                <li
+                  onClick={logout}
+                  className="py-1 hover:text-pink-800 text-sm"
+                >
+                  Logout
+                </li>
+              </ul>
+            </div>
+          )}
+          {user.value && (
+            <MdAccountCircle className="text-xl md:text-3xl mx-2" />
+          )}
+        </a>
+        {!user.value && (
+          <Link href={"/login"}>
+            <a>
+              <button className="bg-pink-600 px-2 py-1 mx-2 rounded-md text-sm text-white">
+                Login
+              </button>
+            </a>
+          </Link>
+        )}
         <AiOutlineShoppingCart
           onClick={toggleCart}
-          className="text-xl md:text-3xl"
+          className="text-2xl md:text-3xl"
         />
-        <Link href={"/login"}>
-          <a>
-            <MdAccountCircle className="text-xl md:text-3xl mx-2" />
-          </a>
-        </Link>
       </div>
       <div
         ref={ref}
