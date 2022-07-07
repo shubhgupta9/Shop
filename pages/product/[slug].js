@@ -343,7 +343,7 @@ export async function getServerSideProps(context) {
   let colorSizeSlug = {};
   for (let item of variants) {
     if (Object.keys(colorSizeSlug).includes(item.color)) {
-      colorSizeSlug[item.color][item.slug] = { slug: item.slug };
+      colorSizeSlug[item.color][item.size] = { slug: item.slug };
     } else {
       colorSizeSlug[item.color] = {};
       colorSizeSlug[item.color][item.size] = { slug: item.slug };

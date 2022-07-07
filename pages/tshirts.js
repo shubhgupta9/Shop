@@ -31,7 +31,7 @@ function Tshirts({ products }) {
                       <h2 className="text-gray-900 title-font text-lg font-medium">
                         {products[item].title}
                       </h2>
-                      <p className="mt-1">{products[item].price}</p>
+                      <p className="mt-1">₹{products[item].price}</p>
                       <div className="mt-1">
                         {products[item].size.includes("S") && (
                           <span className="border border-gray-600 px-1 mx-1">
@@ -91,13 +91,13 @@ export async function getServerSideProps(context) {
   for (let item of products) {
     if (item.title in tshirts) {
       if (
-        tshirts[item.title].color.includes(item.color) &&
+        !tshirts[item.title].color.includes(item.color) &&
         item.availableQty > 0
       ) {
         tshirts[item.title].color.push(item.color);
       }
       if (
-        tshirts[item.title].color.includes(item.color) &&
+        !tshirts[item.title].size.includes(item.size) &&
         item.availableQty > 0
       ) {
         tshirts[item.title].size.push(item.size);

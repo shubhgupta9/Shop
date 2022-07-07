@@ -95,13 +95,13 @@ export async function getServerSideProps(context) {
   for (let item of products) {
     if (item.title in hoods) {
       if (
-        hoods[item.title].color.includes(item.color) &&
+        !hoods[item.title].color.includes(item.color) &&
         item.availableQty > 0
       ) {
         hoods[item.title].color.push(item.color);
       }
       if (
-        hoods[item.title].color.includes(item.color) &&
+        !hoods[item.title].size.includes(item.size) &&
         item.availableQty > 0
       ) {
         hoods[item.title].size.push(item.size);
