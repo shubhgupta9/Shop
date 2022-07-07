@@ -2,13 +2,19 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, router } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { Router } from "next/router";
 
 function Login() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      router.push("/");
+    }
+  }, []);
 
   const handleChange = (e) => {
     if (e.target.id === "email") {
@@ -104,7 +110,6 @@ function Login() {
             className="mt-8 space-y-6"
             method="POST"
           >
-            <input type="hidden" name="remember" value="true" />
             <div className="rounded-md shadow-sm -space-y-px">
               <div>
                 <label htmlFor="email" className="sr-only">
@@ -141,21 +146,6 @@ function Login() {
             </div>
 
             <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-pink-600 focus:ring-pink-500 border-gray-300 rounded"
-                />
-                <label
-                  htmlFor="remember-me"
-                  className="ml-2 block text-sm text-gray-900"
-                >
-                  Remember me
-                </label>
-              </div>
-
               <div className="text-sm">
                 <Link href={"/forgot"}>
                   <a

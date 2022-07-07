@@ -83,7 +83,7 @@ function Navbar({
               onMouseLeave={() => {
                 setDropdown(false);
               }}
-              className="absolute right-7 bg-pink-300 top-7 rounded-md py-2 px-5 w-32"
+              className="absolute right-7 bg-white shadow-lg top-7 border rounded-md py-2 px-5 w-32"
             >
               <ul>
                 <Link href={"/myaccount"}>
