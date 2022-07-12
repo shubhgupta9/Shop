@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 import { BsFillBagCheckFill } from "react-icons/bs";
 import Link from "next/link";
@@ -14,7 +14,17 @@ function Checkout({ cart, clearCart, addToCart, removeFromCart, subTotal }) {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [disabled, setDisabled] = useState(true);
-  const handleChange = (e) => {
+  const [user, setUser] = useState({ value: null });
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("myuser"));
+    if (user.value) {
+      setUser(user);
+      setEmail(user, email);
+    }
+  }, []);
+
+  const handleChange = async (e) => {
     if (e.target.name == "name") {
       setName(e.target.value);
     } else if (e.target.name == "email") {
@@ -25,6 +35,20 @@ function Checkout({ cart, clearCart, addToCart, removeFromCart, subTotal }) {
       setAddress(e.target.value);
     } else if (e.target.name == "pincode") {
       setPincode(e.target.value);
+      if (e.target.value.length == 6) {
+        let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
+        let pinJson = await pins.json();
+        if (Object.keys(pinJson).includes(e.target.value)) {
+          setState(pinJson[e.target.value][1]);
+          setCity(pinJson[e.target.value][0]);
+        } else {
+          setState("");
+          setCity("");
+        }
+      } else {
+        setState("");
+        setCity("");
+      }
     }
     setTimeout(() => {
       if (name && email && phone && address && pincode) {
@@ -55,34 +79,39 @@ function Checkout({ cart, clearCart, addToCart, removeFromCart, subTotal }) {
       body: JSON.stringify(data),
     });
     let txnRes = await a.json();
-    let txnToken = txnRes.txnToken;
+    if (txnRes.success) {
+      let txnToken = txnRes.txnToken;
 
-    var config = {
-      root: "",
-      flow: "DEFAULT",
-      data: {
-        orderId: oid,
-        token: txnToken,
-        tokenType: "TXN_TOKEN",
-        amount: subTotal,
-      },
-      handler: {
-        notifyMerchant: function (eventName, data) {
-          console.log("notifyMerchant handler function called");
-          console.log("eventName => ", eventName);
-          console.log("data => ", data);
+      var config = {
+        root: "",
+        flow: "DEFAULT",
+        data: {
+          orderId: oid,
+          token: txnToken,
+          tokenType: "TXN_TOKEN",
+          amount: subTotal,
         },
-      },
-    };
+        handler: {
+          notifyMerchant: function (eventName, data) {
+            console.log("notifyMerchant handler function called");
+            console.log("eventName => ", eventName);
+            console.log("data => ", data);
+          },
+        },
+      };
 
-    window.Paytm.CheckoutJS.init(config)
-      .then(function onSuccess() {
-        // after successfully updating configuration, invoke JS Checkout
-        window.Paytm.CheckoutJS.invoke();
-      })
-      .catch(function onError(error) {
-        console.log("error => ", error);
-      });
+      window.Paytm.CheckoutJS.init(config)
+        .then(function onSuccess() {
+          // after successfully updating configuration, invoke JS Checkout
+          window.Paytm.CheckoutJS.invoke();
+        })
+        .catch(function onError(error) {
+          console.log("error => ", error);
+        });
+    } else {
+      console.log(txnRes.error);
+      clearCart();
+    }
   };
   return (
     <div className="container m-auto">
@@ -120,14 +149,25 @@ function Checkout({ cart, clearCart, addToCart, removeFromCart, subTotal }) {
             <label htmlFor="email" className="leading-7 text-sm text-gray-600">
               Email
             </label>
-            <input
-              onChange={handleChange}
-              value={email}
-              type="email"
-              id="email"
-              name="email"
-              className="w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-            />
+            {user && user.value ? (
+              <input
+                value={user.email}
+                type="email"
+                id="email"
+                name="email"
+                className="w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                readOnly
+              />
+            ) : (
+              <input
+                onChange={handleChange}
+                value={email}
+                type="email"
+                id="email"
+                name="email"
+                className="w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              />
+            )}
           </div>
         </div>
       </div>
@@ -189,12 +229,12 @@ function Checkout({ cart, clearCart, addToCart, removeFromCart, subTotal }) {
               State
             </label>
             <input
+              onChange={handleChange}
               value={state}
               type="text"
               id="state"
               name="state"
               className="w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-              readOnly={true}
             />
           </div>
         </div>
@@ -204,12 +244,12 @@ function Checkout({ cart, clearCart, addToCart, removeFromCart, subTotal }) {
               City
             </label>
             <input
+              onChange={handleChange}
               value={city}
               type="text"
               id="city"
               name="city"
               className="w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-              readOnly={true}
             />
           </div>
         </div>

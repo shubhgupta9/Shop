@@ -1,5 +1,8 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-
 export default function handler(req, res) {
-  res.status(200).json([110055, 110012, 110060])
+  let pincodes = {
+    110055: ["Paharganj", "New Delhi"],
+    110012: ["Inderpuri", "New Delhi"],
+    110060: ["Pahari dhiraj", "Old Delhi"],
+  };
+  res.status(200).json(pincodes);
 }
