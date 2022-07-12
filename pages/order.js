@@ -41,7 +41,7 @@ function MyOrder(order, clearCart) {
                 </a>
               </div>
 
-              {Object.keys(products).map((item) => {
+              {Object.keys(products).map((key) => {
                 return (
                   <div key={key} className="flex border-t border-gray-200 py-2">
                     <span className="text-gray-500">
@@ -52,7 +52,8 @@ function MyOrder(order, clearCart) {
                       {products[key].qty}
                     </span>
                     <span className="ml-auto text-gray-900 text-center">
-                      ₹{products[key].price}
+                      ₹{products[key].price} X {products[key].qty} = ₹
+                      {products[key].price * products[key].qty}
                     </span>
                   </div>
                 );
@@ -83,7 +84,7 @@ export async function getServerSideProps(context) {
   if (!mongoose.connections[0].readyState) {
     await mongoose.connect(process.env.MONGO_URI);
   }
-  let order = await Order.findById(context.query.id);
+  let order = await Order.findById(context.query._id);
 
   return {
     props: {
